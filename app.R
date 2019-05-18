@@ -1,4 +1,4 @@
-library(shiny)
+  library(shiny)
 library(tmap)
 library(tmaptools)
 library(tidyverse)
@@ -7,8 +7,8 @@ library(plotly)
 library(leaflet)
 library(rgdal)
 
-record_type <- c("Conflict", "Sighting")
-years <- c("2000", "2010")
+record_type <- c("All years","Conflict", "Sighting")
+year_range <- c("All", "2000-2010", "2011-2019")
 
 ui <- fluidPage(
   theme = shinytheme("cerulean"),
@@ -22,7 +22,7 @@ ui <- fluidPage(
         sidebarPanel(
           width = 3,
           selectInput(inputId = "type", label = "Select type of record:", record_type),
-          selectInput(inputId = "years", label = "Select year:", years),
+          selectInput(inputId = "years", label = "Select year:", year_range),
           submitButton(text = "Click to load/refresh map", icon = NULL, width = "100%"),
           br(),
           downloadButton("download_records", "Download data as CSV")
@@ -42,7 +42,7 @@ server <- function(input, output) {
       addProviderTiles(providers$Stamen.TonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %>%
-      addMarkers(data = points) # %>% addPopups(data = points, popup = )
+      addMarkers(data = points) 
   })
 }
 
