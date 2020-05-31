@@ -39,10 +39,17 @@ server <- function(input, output) {
   
   greenLeafIcon <- makeIcon(
     iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
+<<<<<<< HEAD
     iconWidth = 40, iconHeight = 40,
     iconAnchorX = 0, iconAnchorY = 0,
     shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
     shadowWidth = 40, shadowHeight = 40,
+=======
+    iconWidth = 38, iconHeight = 38,
+    iconAnchorX = 0, iconAnchorY = 0,
+    shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
+    shadowWidth = 38, shadowHeight = 38,
+>>>>>>> 62ba5e71c83d626d50ef1faf33ccfa96a54f7298
     shadowAnchorX = 0, shadowAnchorY = 0
   )
 
