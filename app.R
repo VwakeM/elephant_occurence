@@ -39,11 +39,11 @@ server <- function(input, output) {
   
   greenLeafIcon <- makeIcon(
     iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    iconWidth = 38, iconHeight = 38,
-    iconAnchorX = 22, iconAnchorY = 94,
+    iconWidth = 40, iconHeight = 40,
+    iconAnchorX = 0, iconAnchorY = 0,
     shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    shadowWidth = 50, shadowHeight = 64,
-    shadowAnchorX = 4, shadowAnchorY = 62
+    shadowWidth = 40, shadowHeight = 40,
+    shadowAnchorX = 0, shadowAnchorY = 0
   )
 
   output$mymap <- renderLeaflet({
