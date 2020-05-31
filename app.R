@@ -1,4 +1,4 @@
-  library(shiny)
+library(shiny)
 library(tmap)
 library(tmaptools)
 library(tidyverse)
@@ -36,13 +36,22 @@ ui <- fluidPage(
 server <- function(input, output) {
   records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
   points <- cbind(records$Long, records$Lat)
+  
+  greenLeafIcon <- makeIcon(
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
+    iconWidth = 38, iconHeight = 38,
+    iconAnchorX = 22, iconAnchorY = 94,
+    shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
+    shadowWidth = 50, shadowHeight = 64,
+    shadowAnchorX = 4, shadowAnchorY = 62
+  )
 
   output$mymap <- renderLeaflet({
     leaflet() %>%
       addProviderTiles(providers$Stamen.TonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %>%
-      addMarkers(data = points) 
+      addMarkers(data = points, popup = records$Title, icon = greenLeafIcon)
   })
 }
 
