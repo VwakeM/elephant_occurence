@@ -3,4 +3,5 @@ Shiny app to collect and display elephant sightings and conflict in the Nethrava
 Todo: 
 - About tab
 - Hotspot map
-- Popups and images
+- Images
+- Add sightings
