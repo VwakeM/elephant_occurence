@@ -13,7 +13,7 @@ record_type <- c("All", records1$Occurence_type)
 year_range <- c("All", "2000-2010", "2011-2019")
   
 ui <- fluidPage(
-  theme = shinytheme("cerulean"),
+  theme = shinytheme("journal"),
   titlePanel(title = "Elephant records"),
   tabsetPanel(
     id = "Ele_records",
@@ -23,13 +23,13 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           width = 3,
-          selectInput(inputId = "type", label = "Select type of incident:", record_type),
+          selectInput(inputId = "type", label = "Select incident type:", record_type),
           selectInput(inputId = "years", label = "Select year range:", year_range),
-          submitButton(text = "Click to load/refresh map", icon = NULL, width = "100%"),
+          submitButton(text = "Click to update map", icon = NULL, width = "100%"),
           br(),
           downloadButton("download_records", "Download data as CSV")
         ),
-        mainPanel(leafletOutput("mymap", height = 800))
+        mainPanel(leafletOutput("mymap", height = 500))
       )
     )
   )
@@ -39,7 +39,6 @@ server <- function(input, output) {
   records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
   
   ele_filter <- reactive({
-    
     type <- input$type
     year <- input$years
     
@@ -51,20 +50,21 @@ server <- function(input, output) {
     else if(identical(type, "All")){
       records -> df
     }
-    # 
-    # if(identical(year, "2000-2010")){
-    #  recors %>% filter()
     
-    # }
-    # else if(identical(year, "2000-2010")){
-    #   
-    # }
-    
+    if(identical(year, "2000-2010")){
+      df %>% filter(Date < "2011-12-31") -> df_filt
+    }
+    else if(identical(year, "2011-2019")){
+      df %>% filter(Date > "2011-12-31") -> df_filt
+    }
+    else{
+      df -> df_filt
+    }
   })
   
   elephantIcon <- makeIcon(
     iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    iconWidth = 15, iconHeight = 15,
+    iconWidth = 20, iconHeight = 20,
     iconAnchorX = 0, iconAnchorY = 0,
     shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
     shadowWidth = 15, shadowHeight = 15,
@@ -79,14 +79,18 @@ server <- function(input, output) {
     points <- cbind(ele_df$Long, ele_df$Lat)
     
     leaflet(states)%>%
-      addTiles(group = "OSM (default)") %>%
-      addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
-      addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
       addMarkers(data = points, popup = records$Title, icon = elephantIcon, label = records$Title)%>%
       addPolygons(color = "green", weight = 2, 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
                                                       bringToFront = TRUE))
   })
+  
+  output$download_records <- downloadHandler(
+    filename = "ele_records.csv", content = function(file) {
+      write.csv(ele_filter(), file)
+    }
+  )
 }
 
 shinyApp(ui = ui, server = server)
