@@ -5,11 +5,11 @@ library(plotly)
 library(leaflet)
 library(rgdal)
 
-states <- readOGR("Merge.shp")
+protected_areas <- readOGR("Merge.shp")
 
-records1 <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
+records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
 
-record_type <- c("All", records1$Occurence_type)
+record_type <- c("All", records$Occurence_type)
 year_range <- c("All", "2000-2010", "2011-2019")
   
 ui <- fluidPage(
@@ -36,7 +36,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
   
   ele_filter <- reactive({
     type <- input$type
@@ -47,15 +46,15 @@ server <- function(input, output) {
       records %>% filter(Occurence_type == type) -> df
     }
     
-    else if(identical(type, "All")){
+    else{
       records -> df
     }
     
     if(identical(year, "2000-2010")){
-      df %>% filter(Date < "2011-12-31") -> df_filt
+      df %>% filter(Date_range == 1) -> df_filt
     }
     else if(identical(year, "2011-2019")){
-      df %>% filter(Date > "2011-12-31") -> df_filt
+      df %>% filter(Date_range == 2) -> df_filt
     }
     else{
       df -> df_filt
@@ -76,11 +75,13 @@ server <- function(input, output) {
     ele_df <- NULL
     ele_df <- ele_filter()
     
+    print(ele_df)
+    
     points <- cbind(ele_df$Long, ele_df$Lat)
     
-    leaflet(states)%>%
+    leaflet(protected_areas)%>%
       addProviderTiles(providers$CartoDB.Positron) %>%
-      addMarkers(data = points, popup = records$Title, icon = elephantIcon, label = records$Title, clusterOptions = markerClusterOptions())%>%
+      addMarkers(data = points, popup = records$Link, icon = elephantIcon, label = records$Link)%>%
       addPolygons(color = "green", weight = 2, 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
                                                       bringToFront = TRUE))
