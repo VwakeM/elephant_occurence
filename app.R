@@ -29,7 +29,7 @@ ui <- fluidPage(
           br(),
           downloadButton("download_records", "Download data as CSV")
         ),
-        mainPanel(leafletOutput("mymap", height = 500))
+        mainPanel(leafletOutput("mymap", height = 580))
       )
     )
   )
@@ -80,7 +80,7 @@ server <- function(input, output) {
     
     leaflet(states)%>%
       addProviderTiles(providers$CartoDB.Positron) %>%
-      addMarkers(data = points, popup = records$Title, icon = elephantIcon, label = records$Title)%>%
+      addMarkers(data = points, popup = records$Title, icon = elephantIcon, label = records$Title, clusterOptions = markerClusterOptions())%>%
       addPolygons(color = "green", weight = 2, 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
                                                       bringToFront = TRUE))
