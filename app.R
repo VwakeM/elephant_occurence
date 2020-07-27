@@ -10,7 +10,7 @@ protected_areas <- readOGR("Merge.shp")
 records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
 
 record_type <- c("All", records$Occurence_type)
-year_range <- c("All", "2000-2010", "2011-2019")
+year_range <- c("All", "2001-2010", "2011-2020")
   
 ui <- fluidPage(
   theme = shinytheme("journal"),
@@ -75,12 +75,12 @@ server <- function(input, output) {
     ele_df <- NULL
     ele_df <- ele_filter()
     
-    print(ele_df)
-    
     points <- cbind(ele_df$Long, ele_df$Lat)
     
+    link = paste()
+    
     leaflet(protected_areas)%>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
+      addProviderTiles(providers$Esri.WorldTopoMap) %>%
       addMarkers(data = points, popup = records$Link, icon = elephantIcon, label = records$Link)%>%
       addPolygons(color = "green", weight = 2, 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
