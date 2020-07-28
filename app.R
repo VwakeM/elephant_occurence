@@ -76,9 +76,7 @@ server <- function(input, output) {
     ele_df <- ele_filter()
     
     points <- cbind(ele_df$Long, ele_df$Lat)
-    
-    link = paste()
-    
+      
     leaflet(protected_areas)%>%
       addProviderTiles(providers$Esri.WorldTopoMap) %>%
       addMarkers(data = points, popup = records$Link, icon = elephantIcon, label = records$Link)%>%
