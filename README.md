@@ -1,7 +1,3 @@
-Shiny app to collect and display elephant sightings and conflict in the Nethravathi river basin area from news articles and blogs.
+A Shiny app visualizing elephant sightings and conflict in the Nethravathi river basin area. This data comes from local news articles and blogs. Location are approximate, based on best available information (village name, road junction etc.,). 
 
-Todo: 
-- About tab
-- Hotspot map
-- Images
-- Add sightings
+The app is live here: https://vivektest.shinyapps.io/ele_occurence/. 
