@@ -62,12 +62,12 @@ server <- function(input, output) {
   })
   
   elephantIcon <- makeIcon(
-    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    iconWidth = 20, iconHeight = 20,
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Ele_pic.svg",
+    iconWidth = 20, iconHeight = 12,
     iconAnchorX = 0, iconAnchorY = 0,
-    shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    shadowWidth = 15, shadowHeight = 15,
-    shadowAnchorX = 0, shadowAnchorY = 0
+    #shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Ele_pic.svg",
+    #shadowWidth = 15, shadowHeight = 15,
+    # shadowAnchorX = 0, shadowAnchorY = 0
   )
   
   output$mymap <- renderLeaflet({
@@ -82,7 +82,7 @@ server <- function(input, output) {
     leaflet(protected_areas)%>%
       addProviderTiles(providers$Esri.WorldTopoMap) %>%
       addMarkers(data = points, popup = records$Link, icon = elephantIcon, label = records$Link)%>%
-      addPolygons(color = "green", weight = 2, 
+      addPolygons(color = "green", weight = 2, popup = "Protected areas", label = "Protected areas", 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
                                                       bringToFront = TRUE))
   })
