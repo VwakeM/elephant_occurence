@@ -18,7 +18,7 @@ ui <- fluidPage(
   tabsetPanel(
     id = "Ele_records",
     tabPanel(
-      "Occurence Maps",
+      "Occurence records from news articles and blogs.",
       tags$br(),
       sidebarLayout(
         sidebarPanel(
@@ -43,44 +43,52 @@ server <- function(input, output) {
     
     if(!identical(type, "All"))
     {
-      records %>% filter(Occurence_type == type) -> df
+       if(identical(year, "2001-2010")){
+        records %>% filter(Occurence_type == type) %>% filter(Date_range == 1) -> df_filt
+
+      }
+      else if(identical(year, "2011-2020")){
+        records %>% filter(Occurence_type == type) %>% filter(Date_range == 2) -> df_filt
+      }
+      else{
+        records %>% filter(Occurence_type == type) -> df_filt
+      }
     }
     
     else{
-      records -> df
+      
+      if(identical(year, "2001-2010")){
+        print(year)
+        records %>% filter(Date_range == 1) -> df_filt
+      }
+      else if(identical(year, "2011-2020")){
+        print(year)
+        records %>% filter(Date_range == 2) -> df_filt
+      }
+      else{
+        print(year)
+        records -> df_filt
+      }
     }
     
-    if(identical(year, "2000-2010")){
-      df %>% filter(Date_range == 1) -> df_filt
-    }
-    else if(identical(year, "2011-2019")){
-      df %>% filter(Date_range == 2) -> df_filt
-    }
-    else{
-      df -> df_filt
-    }
   })
   
   elephantIcon <- makeIcon(
-    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    iconWidth = 20, iconHeight = 20,
-    iconAnchorX = 0, iconAnchorY = 0,
-    shadowUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1f/Asian_Elephant_Icon.svg",
-    shadowWidth = 15, shadowHeight = 15,
-    shadowAnchorX = 0, shadowAnchorY = 0
+    iconUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Ele_pic.svg",
+    iconWidth = 20, iconHeight = 12,
+    iconAnchorX = 0, iconAnchorY = 0
   )
   
   output$mymap <- renderLeaflet({
-    
-    ele_df <- NULL
     ele_df <- ele_filter()
     
+    print(ele_df)
     points <- cbind(ele_df$Long, ele_df$Lat)
-      
+    
     leaflet(protected_areas)%>%
       addProviderTiles(providers$Esri.WorldTopoMap) %>%
       addMarkers(data = points, popup = records$Link, icon = elephantIcon, label = records$Link)%>%
-      addPolygons(color = "green", weight = 2, 
+      addPolygons(color = "green", weight = 2, popup = "Protected areas", label = "Protected areas", 
                   highlightOptions = highlightOptions(color = "blue", weight = 2,
                                                       bringToFront = TRUE))
   })
