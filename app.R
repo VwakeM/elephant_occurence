@@ -11,7 +11,7 @@ reserve_forest <- readOGR("RF.shp")
 
 records <- read.csv("elephant_records.csv", header = T, stringsAsFactors = FALSE)
 
-record_type <- c("All", records$Occurence_type)
+record_type <- c("All", str_trim(records$Occurence_type))
 year_range <- c("All", "2001-2010", "2011-2020")
 
 infra_type <- c("All","Dams", "Mini Hydel", "National Highway", "Small Roads", "Kaccha Roads", "Powerline", "Pipeline")
